@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Voting App</title>
+</head>
+<body>
+    <h1>Vote for BRS Party</h1>
+    <button onclick="vote()">Vote</button>
+    <div id="result"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function vote() {
+            var data = {
+                party: 'BRS Party',
+                details: 'Party members and their details go here.',
+            };
+            socket.emit('vote', data);
+        }
+
+        socket.on('vote_result', function (data) {
+            document.getElementById('result').innerHTML = 'Vote for ' + data.party + ' received!<br>' + data.details;
+        });
+    </script>
+</body>
+</html>
